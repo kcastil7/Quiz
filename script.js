@@ -2,41 +2,62 @@ var startBtn = document.querySelector(".start-quiz");
 var defaultContent = document.querySelector(".default-content");
 var quizContent = document.querySelector(".quiz-content");
 var question = document.querySelector(".question");
-var ansBtn = document.querySelector(".ans-bts");
-var btn1
+var ansBtnEl = document.querySelector(".ans-bts");
+var ansBtn = document.querySelector(".ans-btn");
+var btn
+var quesCounter = 0;
 
 
 startBtn.addEventListener('click', function () {
-    console.log("here");
+    console.log("eventlistener activated");
     defaultContent.textContent = "";
     quizContent.style.display = "block";
-    var questions = [
-        [
-        "A very useful tool used during development and debugging for printing content to the debugger is:",
-        [["1. Javascript",false], ["2. terminal/bash",false], ["3. for loops",false], ["4. console.log",true]]
-        ],
-    ["How do you leave hidden comments in HTML code?", [["1. //",false], ["2. !-",false], ["3. <!-- -->",true], ["4. /!-- --/",false]]]
 
+    var questions = [
+        //first index of objects
+        {
+            ques: "A very useful tool used during development and debugging for printing content to the debugger is:",
+            answer: [
+                { ansText: "1. Javascript", isCorrect: false },
+                { ansText: "2. terminal/bash", isCorrect: false },
+                { ansText: "3. for loops", isCorrect: false },
+                { ansText: "4. console.log", isCorrect: true }
+            ]
+        },
+        //second index of objects
+        {
+            ques: "How do you leave hidden comments in HTML code?",
+            answer: [
+                { ansText: "1. //", isCorrect: false },
+                { ansText: "2. !-", isCorrect: false },
+                { ansText: "3. <!-- -->", isCorrect: true },
+                { ansText: "4. /!-- --/", isCorrect: false }
+            ]
+        }
     ];
 
+    displayQuestion();
 
-    for (var i = 0; i < questions.length; i++) {
-        question.textContent = questions[i][0];
-        for (var k = 0; k < questions[i][1].length; k++) {
-            console.log('questions[i][1].length',questions[i][1].length)
-            console.log('k', k)
-            btn1 = document.createElement("button");
-            btn1.setAttribute("class","ans-btn");
-            btn1.setAttribute("correct",questions[i][1][k][1]);
-            btn1.textContent = questions[i][1][k][0];
-            ansBtn.appendChild(btn1);
-
+    function displayQuestion() {
+        ansBtnEl.textContent = "";
+        question.textContent = questions[quesCounter].ques;
+        for (var i = 0; i < 4; i++) {
+            btn = document.createElement("button");
+            btn.setAttribute("class", "ans-btn");
+            btn.setAttribute("is-correct", questions[quesCounter].answer[i].isCorrect);
+            console.log(questions[quesCounter].answer[i].isCorrect);
+            btn.textContent = questions[quesCounter].answer[i].ansText;
+            ansBtnEl.appendChild(btn);
         }
-        btn1.addEventListener('click',function(){
-            var result = btn1.getAttribute("correct");
-            console.log(result);
-
-        });
     }
+
+    ansBtnEl.addEventListener('click', function (event){ 
+        var ansSubmit = event.target;
+        console.log (ansSubmit.getAttribute("is-correct"));
+        
+
+
+    });
+
 
 });
