@@ -45,3 +45,9 @@
 .ans-bts {
     margin-left: -32px;
 }
+
+.highscore {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

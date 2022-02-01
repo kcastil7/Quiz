@@ -7,7 +7,8 @@ var ansBtn = document.querySelector(".ans-btn");
 var scoreEl = document.querySelector(".timer");
 var btn
 var quesCounter = 0;
-var timeCounter = 60;
+var timeCounter = 59;
+var timescore;
 
 
 startBtn.addEventListener('click', function () {
@@ -39,19 +40,20 @@ startBtn.addEventListener('click', function () {
     ];
 
     displayQuestion();
+    timescore = setInterval(function() {
+        if(timeCounter > 0) {
+        scoreEl.textContent = "Score: " + timeCounter;
+        timeCounter--;
+        }
+        else {
+            clearInterval(timescore);
+            scoreEl.textContent = "Time is Up!";
+            location.href = "submit.html?score="+0;
+        }
+    },1000);
 
     function displayQuestion() {
-        var timescore = setInterval(function() {
-            if(timeCounter > 0) {
-            scoreEl.textContent = "Score: " + timeCounter;
-            timeCounter--;
-            }
-            else {
-                clearInterval(timescore);
-                scoreEl.textContent = "Time is Up!";
-                timeCounter--;
-            }
-        },1000);
+
 
         ansBtnEl.textContent = "";
         question.textContent = questions[quesCounter].ques;
@@ -63,13 +65,19 @@ startBtn.addEventListener('click', function () {
             btn.textContent = questions[quesCounter].answer[i].ansText;
             ansBtnEl.appendChild(btn);
         }
-
     }
 
-    ansBtnEl.addEventListener('click', function (event){ 
+    ansBtnEl.addEventListener('click', function (event){
         var ansSubmit = event.target;
         var isCorrect = (ansSubmit.getAttribute("is-correct") === "true");
+        console.log(questions.length);
         if(isCorrect){
+            if(quesCounter === questions.length-1) {
+                clearInterval(timescore);
+                console.log(timeCounter);
+                location.href = "submit.html?score="+timeCounter;
+            }
+
             // console.log(ansSubmit.getAttribute("is-correct"));
             quesCounter++;
             displayQuestion();
